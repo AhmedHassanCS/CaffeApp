@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -28,6 +29,7 @@ import com.apps.ahfreelancing.caffetask.presentation.viewmodel.ProductViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.inject.Inject;
 
@@ -67,6 +69,7 @@ public class ProductActivity extends AppCompatActivity  implements AdditionsAdap
     private int tax;
     private int quantity;
 
+    private SparseIntArray additions;
     @Inject
     ViewModelFactory<ProductViewModel> viewModelFactory;
     private ProductViewModel viewModel;
@@ -80,6 +83,7 @@ public class ProductActivity extends AppCompatActivity  implements AdditionsAdap
         initDagger();
         ButterKnife.bind(this);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProductViewModel.class);
+        additions = new SparseIntArray();
     }
 
     @Override
@@ -91,17 +95,14 @@ public class ProductActivity extends AppCompatActivity  implements AdditionsAdap
 
     private void subscribeViewModel(){
         if(!viewModel.getProductLiveData(1).hasObservers()){
-            viewModel.getProductLiveData(1).observe(this, new Observer<Product>(){
-                @Override
-                public void onChanged(Product product) {
-                    bindData(product);
-                    progressBar.setVisibility(View.GONE);
-                    productScrollView.setVisibility(View.VISIBLE);
-                    if(additionsAdapter.additions.size() != 0)
-                        return;
-                    additionsAdapter.additions.addAll(product.getAdditions());
-                    additionsAdapter.notifyDataSetChanged();
-                }
+            viewModel.getProductLiveData(1).observe(this, product -> {
+                bindData(product);
+                progressBar.setVisibility(View.GONE);
+                productScrollView.setVisibility(View.VISIBLE);
+                if(additionsAdapter.additions.size() != 0)
+                    return;
+                additionsAdapter.additions.addAll(product.getAdditions());
+                additionsAdapter.notifyDataSetChanged();
             });
         } else viewModel.updateProduct(1);
     }
@@ -167,6 +168,12 @@ public class ProductActivity extends AppCompatActivity  implements AdditionsAdap
 
     @Override
     public void onSubAdditionChosen(int sub, int addition) {
-
+        if(additions.indexOfKey(addition) >= 0){
+            if(additions.get(addition) == sub) {
+                additions.delete(addition);
+                return;
+            }
+        }
+        additions.put(addition, sub);
     }
 }

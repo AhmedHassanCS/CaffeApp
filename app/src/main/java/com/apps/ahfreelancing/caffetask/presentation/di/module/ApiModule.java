@@ -1,5 +1,7 @@
 package com.apps.ahfreelancing.caffetask.presentation.di.module;
 
+import android.app.Application;
+
 import com.apps.ahfreelancing.caffetask.BuildConfig;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,6 +19,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 @Module
 public class ApiModule {
+    private Application application;
+    public ApiModule(Application application){
+        this.application = application;
+    }
+
+    @Provides
+    Application provideApplication(){
+        return application;
+    }
+
     @Provides
     Retrofit provideRetrofit(){
         Gson gson = new GsonBuilder()

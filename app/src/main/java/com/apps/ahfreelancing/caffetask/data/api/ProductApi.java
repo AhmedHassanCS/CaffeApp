@@ -5,12 +5,13 @@ import com.apps.ahfreelancing.caffetask.data.entity.calls.ProductBody;
 
 import io.reactivex.Single;
 import retrofit2.http.Body;
-import retrofit2.http.GET;
+
+import retrofit2.http.POST;
 
 /**
  * Created by Ahmed Hassan on 9/3/2019.
  */
 public interface ProductApi {
-    @GET("product")
+    @POST("Product")
     Single<ProductWrapper> getProduct(@Body ProductBody productBody);
 }

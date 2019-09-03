@@ -12,16 +12,19 @@ public class Product {
     private String title;
     private String description;
     private String price;
+    private String tax;
+
     @SerializedName("img") private String imageURL;
     @SerializedName("Additions") private List<Addition> additions;
 
-    public Product(int id, String title, String description, String price, String imageURL, List<Addition> additions) {
+    public Product(int id, String title, String description, String price, String imageURL, String tax, List<Addition> additions) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.price = price;
         this.imageURL = imageURL;
         this.additions = additions;
+        this.tax = tax;
     }
 
     public int getId() {
@@ -46,6 +49,10 @@ public class Product {
 
     public List<Addition> getAdditions() {
         return additions;
+    }
+
+    public String getTax() {
+        return tax;
     }
 }
 

@@ -5,4 +5,6 @@
     <string name="tax">قيمة الضريبة</string>
     <string name="final_sum">المجموع النهائي</string>
     <string name="continue_text">متابعة</string>
+    <string name="connection_lost">تأكد من إتصالك بالأنترنت</string>
+    <string name="currency">&#160; ريال &#160;</string>
 </resources>

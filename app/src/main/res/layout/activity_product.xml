@@ -6,8 +6,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <ProgressBar
+        android:id="@+id/productProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
     <ScrollView
+        android:id="@+id/productMainLayout"
         android:layout_width="match_parent"
+        android:visibility="invisible"
         android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,8 +25,8 @@
 
             <ImageView
                 android:id="@+id/productImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
                 android:src="@drawable/ic_launcher_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +42,7 @@
                 app:layout_constraintTop_toBottomOf="@id/ProductDescTextView">
 
                 <ImageView
-                    android:id="@+id/quantityAddImageView"
+                    android:id="@+id/quantityRemoveImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -44,7 +51,7 @@
                     android:src="@drawable/ic_remove_black" />
 
                 <ImageView
-                    android:id="@+id/quantityRemoveImageView"
+                    android:id="@+id/quantityAddImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/ProductQuantityTextView"
@@ -56,8 +63,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/product_layout_margin"
-                    android:layout_toRightOf="@id/quantityAddImageView"
-                    android:text="5"
+                    android:layout_toRightOf="@id/quantityRemoveImageView"
+                    android:text="1"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/text_bigger_size"
                     android:textStyle="bold" />

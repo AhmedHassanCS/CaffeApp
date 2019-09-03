@@ -1,6 +1,7 @@
 package com.apps.ahfreelancing.caffetask.data.entity;
 
 import com.apps.ahfreelancing.caffetask.presentation.model.Product;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Ahmed Hassan on 9/3/2019.
@@ -8,7 +9,7 @@ import com.apps.ahfreelancing.caffetask.presentation.model.Product;
 public class ProductWrapper {
     private int code;
     private String status;
-    private Product product;
+    @SerializedName("Product") private Product product;
 
     public ProductWrapper(int code, String status, Product product) {
         this.code = code;

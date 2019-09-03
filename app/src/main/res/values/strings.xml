@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">CaffeTask</string>
+    <string name="app_name">CafeTask</string>
+    <string name="quantity">الكمية</string>
+    <string name="total">الإجمالي</string>
+    <string name="tax">قيمة الضريبة</string>
+    <string name="final_sum">المجموع النهائي</string>
+    <string name="continue_text">متابعة</string>
 </resources>

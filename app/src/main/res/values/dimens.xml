@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="product_layout_margin">15dp</dimen>
+    <dimen name="checkout_layout_margin">10dp</dimen>
+    <dimen name="text_title_size">20sp</dimen>
+    <dimen name="text_content_size">18sp</dimen>
+    <dimen name="text_bigger_size">22sp</dimen>
+</resources>

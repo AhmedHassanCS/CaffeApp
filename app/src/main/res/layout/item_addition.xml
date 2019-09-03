@@ -2,18 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/product_layout_margin"
+    android:layout_marginTop="5dp"
     android:orientation="horizontal">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/subAdditionListView"
+        android:id="@+id/subAdditionRecyclerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/additionTitle"
+        android:layout_toLeftOf="@+id/additionTitleTextView"
+        android:layoutDirection="rtl"
         android:layout_gravity="start"/>
     <TextView
-        android:id="@+id/additionTitle"
+        android:id="@+id/additionTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/product_layout_margin"

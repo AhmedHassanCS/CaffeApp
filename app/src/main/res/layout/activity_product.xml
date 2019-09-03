@@ -15,12 +15,14 @@
         android:id="@+id/productMainLayout"
         android:layout_width="match_parent"
         android:visibility="invisible"
-        android:layout_height="wrap_content">
+        android:background="@color/colorWhite"
+        android:layout_height="370dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/product_layout_margin"
+            android:paddingLeft="@dimen/product_layout_margin"
+            android:paddingRight="@dimen/product_layout_margin"
             tools:context=".presentation.view.activity.ProductActivity">
 
             <ImageView
@@ -120,7 +122,6 @@
                 android:id="@+id/productImageDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="@dimen/product_layout_margin"
                 android:background="@color/colorGray"
                 app:layout_constraintTop_toBottomOf="@id/productImageView" />
 

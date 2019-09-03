@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -21,9 +22,12 @@ import com.apps.ahfreelancing.caffetask.presentation.di.component.DaggerApplicat
 import com.apps.ahfreelancing.caffetask.presentation.di.module.ApiModule;
 import com.apps.ahfreelancing.caffetask.presentation.di.module.ThreadModule;
 import com.apps.ahfreelancing.caffetask.presentation.model.Product;
+import com.apps.ahfreelancing.caffetask.presentation.view.adapter.AdditionsAdapter;
 import com.apps.ahfreelancing.caffetask.presentation.view.utility.ConnectionUtility;
 import com.apps.ahfreelancing.caffetask.presentation.viewmodel.ProductViewModel;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -31,7 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ProductActivity extends AppCompatActivity {
+public class ProductActivity extends AppCompatActivity  implements AdditionsAdapter.AdditionCallback {
 
     @BindView(R.id.productTitleTextView)
     TextView titleTextView;
@@ -62,12 +66,12 @@ public class ProductActivity extends AppCompatActivity {
     private int price;
     private int tax;
     private int quantity;
-    private int total;
-    private int sum;
 
     @Inject
     ViewModelFactory<ProductViewModel> viewModelFactory;
     private ProductViewModel viewModel;
+
+    private AdditionsAdapter additionsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,12 +90,6 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     private void subscribeViewModel(){
-        /*if(!ConnectionUtility.isNetworkConnected()){
-            Intent i = new Intent(this, ConnectionActivity.class);
-            startActivity(i);
-            return;
-        }*/
-
         if(!viewModel.getProductLiveData(1).hasObservers()){
             viewModel.getProductLiveData(1).observe(this, new Observer<Product>(){
                 @Override
@@ -99,13 +97,23 @@ public class ProductActivity extends AppCompatActivity {
                     bindData(product);
                     progressBar.setVisibility(View.GONE);
                     productScrollView.setVisibility(View.VISIBLE);
+                    if(additionsAdapter.additions.size() != 0)
+                        return;
+                    additionsAdapter.additions.addAll(product.getAdditions());
+                    additionsAdapter.notifyDataSetChanged();
                 }
             });
         } else viewModel.updateProduct(1);
     }
 
     private void setupRecyclerView(){
+        LinearLayoutManager layoutManager =
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        additionsRecyclerView.setLayoutManager(layoutManager);
 
+        additionsAdapter = new AdditionsAdapter(new ArrayList<>(), this, this);
+        additionsRecyclerView.setAdapter(additionsAdapter);
+        additionsRecyclerView.setNestedScrollingEnabled(false);
     }
 
     private void bindData(Product product){
@@ -124,8 +132,8 @@ public class ProductActivity extends AppCompatActivity {
         this.quantity = quantity;
         this.tax = tax;
 
-        total = price * quantity;
-        sum = ((tax * total) / 100) + total;
+        double total = price * quantity;
+        double sum = ((tax * total) / 100.0) + total;
 
         priceTextView.setText(price + getString(R.string.currency));
         totalPriceTextView.setText(total+ getString(R.string.currency));
@@ -155,5 +163,10 @@ public class ProductActivity extends AppCompatActivity {
                         .threadModule(new ThreadModule())
                 .build();
         applicationComponent.inject(this);
+    }
+
+    @Override
+    public void onSubAdditionChosen(int sub, int addition) {
+
     }
 }

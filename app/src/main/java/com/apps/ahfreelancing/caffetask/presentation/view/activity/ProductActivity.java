@@ -1,8 +1,10 @@
-package com.apps.ahfreelancing.caffetask;
+package com.apps.ahfreelancing.caffetask.presentation.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.apps.ahfreelancing.caffetask.R;
 
 public class ProductActivity extends AppCompatActivity {
 

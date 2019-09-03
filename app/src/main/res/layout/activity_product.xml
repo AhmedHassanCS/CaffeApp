@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/product_layout_margin"
-            tools:context=".ProductActivity">
+            tools:context=".presentation.view.activity.ProductActivity">
 
             <ImageView
                 android:id="@+id/productImageView"

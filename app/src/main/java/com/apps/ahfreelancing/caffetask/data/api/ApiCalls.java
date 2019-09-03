@@ -1,7 +1,9 @@
 package com.apps.ahfreelancing.caffetask.data.api;
 
 import com.apps.ahfreelancing.caffetask.data.entity.ProductWrapper;
+import com.apps.ahfreelancing.caffetask.data.entity.PurchaseResponse;
 import com.apps.ahfreelancing.caffetask.data.entity.calls.ProductBody;
+import com.apps.ahfreelancing.caffetask.data.entity.calls.PurchaseBody;
 
 import javax.inject.Inject;
 
@@ -21,5 +23,9 @@ public class ApiCalls {
 
     public Single<ProductWrapper> getProduct(int id){
         return productApi.getProduct(new ProductBody(id));
+    }
+
+    public Single<PurchaseResponse> storeOrder(PurchaseBody purchaseBody){
+        return  productApi.storeOrder(purchaseBody);
     }
 }

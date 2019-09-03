@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.apps.ahfreelancing.caffetask.data.entity.ProductWrapper;
+import com.apps.ahfreelancing.caffetask.data.entity.calls.PurchaseBody;
 import com.apps.ahfreelancing.caffetask.data.repository.ProductRepository;
 import com.apps.ahfreelancing.caffetask.presentation.model.Product;
 import com.apps.ahfreelancing.caffetask.presentation.view.activity.ConnectionActivity;
@@ -31,6 +32,7 @@ public class ProductViewModel extends AndroidViewModel {
     private ProductRepository productRepository;
 
     private MutableLiveData<Product> productLiveData;
+    private MutableLiveData<Boolean> purchaseLiveData;
     @Inject
     public ProductViewModel(
             Application application,
@@ -44,11 +46,20 @@ public class ProductViewModel extends AndroidViewModel {
         this.subscribeOnScheduler = subscribeOn;
 
         productLiveData = new MutableLiveData<>();
+        purchaseLiveData = new MutableLiveData<>();
     }
 
     public LiveData<Product> getProductLiveData(int id) {
         updateProduct(id);
         return productLiveData;
+    }
+
+    public LiveData<Boolean> submitPurchase(PurchaseBody purchaseBody){
+        productRepository.purchase(purchaseBody)
+                .subscribeOn(subscribeOnScheduler)
+                .observeOn(observeOnScheduler)
+                .subscribe(new PurchaseObserver());
+        return purchaseLiveData;
     }
 
     public void updateProduct(int id){
@@ -77,6 +88,25 @@ public class ProductViewModel extends AndroidViewModel {
             this.d.dispose();
         }
 
+
+        @Override
+        public void onError(Throwable e) {
+            Log.d("Network_Error", e.getMessage());
+            Intent i = new Intent(getApplication(), ConnectionActivity.class);
+            getApplication().startActivity(i);
+        }
+    }
+
+    class PurchaseObserver implements SingleObserver<Boolean>{
+
+        @Override
+        public void onSubscribe(Disposable d) {
+        }
+
+        @Override
+        public void onSuccess(Boolean success) {
+            purchaseLiveData.setValue(success);
+        }
 
         @Override
         public void onError(Throwable e) {

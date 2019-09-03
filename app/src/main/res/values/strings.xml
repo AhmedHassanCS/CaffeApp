@@ -7,4 +7,6 @@
     <string name="continue_text">متابعة</string>
     <string name="connection_lost">تأكد من إتصالك بالأنترنت</string>
     <string name="currency">&#160; ريال &#160;</string>
+    <string name="submitted">تم إرسال طلبك بنجاح</string>
+    <string name="try_again">حدث خطأ، حاول مرة أخري</string>
 </resources>

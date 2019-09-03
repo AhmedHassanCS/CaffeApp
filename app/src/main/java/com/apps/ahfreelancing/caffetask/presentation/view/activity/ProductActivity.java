@@ -1,6 +1,7 @@
 package com.apps.ahfreelancing.caffetask.presentation.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
@@ -11,12 +12,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apps.ahfreelancing.caffetask.R;
+import com.apps.ahfreelancing.caffetask.data.entity.calls.PurchaseBody;
 import com.apps.ahfreelancing.caffetask.presentation.di.ViewModelFactory;
 import com.apps.ahfreelancing.caffetask.presentation.di.component.ApplicationComponent;
 import com.apps.ahfreelancing.caffetask.presentation.di.component.DaggerApplicationComponent;
@@ -65,11 +69,16 @@ public class ProductActivity extends AppCompatActivity  implements AdditionsAdap
     @BindView(R.id.additionsRecyclerView)
     RecyclerView additionsRecyclerView;
 
+    @BindView(R.id.submitButton)
+    Button submitButton;
+
     private int price;
     private int tax;
     private int quantity;
 
-    private SparseIntArray additions;
+    private boolean orderCompleted;
+
+    private HashMap<Integer, Integer> additions;
     @Inject
     ViewModelFactory<ProductViewModel> viewModelFactory;
     private ProductViewModel viewModel;
@@ -83,12 +92,14 @@ public class ProductActivity extends AppCompatActivity  implements AdditionsAdap
         initDagger();
         ButterKnife.bind(this);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProductViewModel.class);
-        additions = new SparseIntArray();
+        additions = new HashMap<>();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        if(orderCompleted)
+            return;
         subscribeViewModel();
         setupRecyclerView();
     }
@@ -168,12 +179,54 @@ public class ProductActivity extends AppCompatActivity  implements AdditionsAdap
 
     @Override
     public void onSubAdditionChosen(int sub, int addition) {
-        if(additions.indexOfKey(addition) >= 0){
+        if(additions.containsKey(addition)){
             if(additions.get(addition) == sub) {
-                additions.delete(addition);
+                additions.remove(addition);
                 return;
             }
         }
         additions.put(addition, sub);
+    }
+
+    @OnClick(R.id.submitButton)
+    void onSubmitClick(){
+        StringBuilder strAdditions = new StringBuilder();
+        StringBuilder strSubs = new StringBuilder();
+        for (int i = 0; i < additions.keySet().size(); i++){
+            if(i != additions.keySet().size() - 1)
+                 strAdditions.append(String.format("%s%s",additions.keySet().toArray()[i].toString(), ','));
+            else strAdditions.append(additions.keySet().toArray()[i].toString());
+        }
+
+        for (int i = 0; i < additions.values().size(); i++){
+            if(i != additions.values().size() - 1)
+                strSubs.append(String.format("%s%s",additions.values().toArray()[i].toString(), ','));
+            else strSubs.append(additions.values().toArray()[i].toString());
+        }
+
+        viewModel.submitPurchase(new PurchaseBody(strAdditions.toString(), strSubs.toString(), quantity))
+                .observe(this, success -> {
+                    if(success){
+                        productScrollView.setVisibility(View.GONE);
+                        submitButton.setCompoundDrawables(
+                                null, null, ContextCompat.getDrawable(this, R.drawable.ic_check_circle) ,null);
+                        submitButton.setText(R.string.submitted);
+
+                        submitButton.setOnClickListener((a)->{
+                            restartActivity();
+                        });
+                        orderCompleted = true;
+                    } else Toast.makeText(this, R.string.try_again, Toast.LENGTH_LONG).show();
+                });
+    }
+
+    private void restartActivity(){
+        Intent homeIntent = new Intent(this, ProductActivity.class);
+        homeIntent.setFlags(homeIntent.getFlags() |
+        Intent.FLAG_ACTIVITY_NEW_TASK |
+        Intent.FLAG_ACTIVITY_CLEAR_TASK |
+        Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(homeIntent);
+
     }
 }

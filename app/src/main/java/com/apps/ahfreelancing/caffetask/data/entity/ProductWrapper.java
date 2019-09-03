@@ -1,4 +1,4 @@
-package com.apps.ahfreelancing.caffetask.data;
+package com.apps.ahfreelancing.caffetask.data.entity;
 
 import com.apps.ahfreelancing.caffetask.presentation.model.Product;
 

@@ -26,3 +26,4 @@ project uses **Dagger2** for dependency injection.
 * ViewModel
 * LiveData
 * Picasso
+* ButterKnife

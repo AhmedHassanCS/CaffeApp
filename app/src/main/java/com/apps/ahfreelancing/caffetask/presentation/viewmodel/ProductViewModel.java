@@ -22,6 +22,8 @@ import io.reactivex.Scheduler;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 /**
  * Created by Ahmed Hassan on 9/3/2019.
  */
@@ -93,6 +95,7 @@ public class ProductViewModel extends AndroidViewModel {
         public void onError(Throwable e) {
             Log.d("Network_Error", e.getMessage());
             Intent i = new Intent(getApplication(), ConnectionActivity.class);
+            i.setFlags(i.getFlags() | FLAG_ACTIVITY_NEW_TASK);
             getApplication().startActivity(i);
         }
     }

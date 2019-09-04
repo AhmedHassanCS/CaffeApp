@@ -229,4 +229,5 @@ public class ProductActivity extends AppCompatActivity  implements AdditionsAdap
         startActivity(homeIntent);
 
     }
+
 }
